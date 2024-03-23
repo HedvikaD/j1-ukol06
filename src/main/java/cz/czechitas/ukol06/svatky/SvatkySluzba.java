@@ -1,5 +1,6 @@
 package cz.czechitas.ukol06.svatky;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,9 +20,8 @@ public class SvatkySluzba {
 
     public SvatkySluzba() throws IOException {
         // TODO načíst seznam svátků ze souboru svatky.json
+        seznamSvatku = objectMapper.readValue(cestaKDatum.toFile(), SeznamSvatku.class);
 
-        // Následující řádek po vlastní implementaci smažete.
-        seznamSvatku = null;
     }
 
     public List<String> vyhledatSvatkyDnes() {
@@ -36,7 +36,11 @@ public class SvatkySluzba {
         // pomocí metody map() získat z objektu jméno
         // pomocí toList() převést na List
 
-        // Následující řádek po vlastní implementaci smažete.
-        return List.of();
+        return seznamSvatku.getSvatky().stream()
+                .filter(svatek -> svatek.getDen().equals(day))
+                .map(Svatek::getJmeno)
+                .toList();
+                // Následující řádek po vlastní implementaci smažete.
+
     }
 }
