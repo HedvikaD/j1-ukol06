@@ -16,11 +16,16 @@ public class SvatkySluzba {
             .addModule(new JavaTimeModule())
             .build();
     private final Path cestaKDatum = Path.of("data/svatky.json");
-    private final SeznamSvatku seznamSvatku;
+    private SeznamSvatku seznamSvatku;
 
     public SvatkySluzba() throws IOException {
         // TODO načíst seznam svátků ze souboru svatky.json
-        seznamSvatku = objectMapper.readValue(cestaKDatum.toFile(), SeznamSvatku.class);
+
+        try {
+            seznamSvatku = objectMapper.readValue(cestaKDatum.toFile(), SeznamSvatku.class);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Nepodařilo se načíst seznam svátků ze souboru");
+        }
 
     }
 
